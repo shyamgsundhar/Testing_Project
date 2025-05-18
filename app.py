@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import pickle
 import numpy as np
+import os  # <-- import os to get PORT
 
 app = Flask(__name__)
 
@@ -18,3 +19,8 @@ def predict():
     input_features = np.array(data['input']).reshape(1, -1)
     prediction = model.predict(input_features)
     return jsonify({'prediction': prediction.tolist()})
+
+# THIS IS THE IMPORTANT PART
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))  # use the PORT from environment
+    app.run(host='0.0.0.0', port=port)
